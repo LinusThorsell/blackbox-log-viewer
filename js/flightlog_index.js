@@ -9,7 +9,7 @@ function FlightLogIndex(logData) {
         intraframeDirectories = false;
         
     function buildLogOffsetsIndex() {
-        var 
+var 
             stream = new ArrayDataStream(logData), 
             i, logStart;
         
@@ -46,6 +46,7 @@ function FlightLogIndex(logData) {
                     initialIMU: [],
                     initialSlow: [],
                     initialGPSHome: [],
+                    initialGPS: [],
                     hasEvent: [],
                     minTime: false,
                     maxTime: false
@@ -83,8 +84,10 @@ function FlightLogIndex(logData) {
                     magADC = [mainFrameDef.nameToIndex["magADC[0]"], mainFrameDef.nameToIndex["magADC[1]"], mainFrameDef.nameToIndex["magADC[2]"]],
                     
                     lastSlow = [],
-                    lastGPSHome = [];
-                
+                    lastGPSHome = [],
+                                   
+                    lastGPS = [mainFrameDef.nameToIndex["lastGPS[0]"], mainFrameDef.nameToIndex["lastGPS[1]"], mainFrameDef.nameToIndex["lastGPS[2]"], mainFrameDef.nameToIndex["lastGPS[3]"], mainFrameDef.nameToIndex["lastGPS[4]"], mainFrameDef.nameToIndex["lastGPS[5]"], mainFrameDef.nameToIndex["lastGPS[6]"]];
+
                 // Identify motor fields so they can be used to show the activity summary bar
                 for (var j = 0; j < 8; j++) {
                     if (mainFrameDef.nameToIndex["motor[" + j + "]"] !== undefined) {
@@ -139,6 +142,7 @@ function FlightLogIndex(logData) {
                                     intraIndex.initialIMU.push(new IMU(imu));
                                     intraIndex.initialSlow.push(lastSlow);
                                     intraIndex.initialGPSHome.push(lastGPSHome);
+                                    intraIndex.initialGPS.push(lastGPS);
                                 }
                                 
                                 iframeCount++;
@@ -165,6 +169,14 @@ function FlightLogIndex(logData) {
                             if (frame.event == FlightLogEvent.LOG_END) {
                                 sawEndMarker = true;
                             }
+                        break;
+                        case 'G':
+                            var frameTime = frame[0];
+                            //H Field G name:time,GPS_numSat,GPS_coord[0],GPS_coord[1],GPS_altitude,GPS_speed,GPS_ground_course
+                            lastGPS = [frame[1], frame[2], frame[3], frame[4], frame[5], frame[6]];
+
+                            console.log(`full frame: ${frame}`);
+                            console.log(intraIndex)
                         break;
                         case 'S':
                             lastSlow = frame.slice(0);

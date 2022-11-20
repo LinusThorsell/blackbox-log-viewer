@@ -166,6 +166,15 @@ function BlackboxLogViewer() {
     
         if (value === null)
             return "(absent)";
+
+        console.log("Value sent to tofixed: ");
+        console.log(value);
+        // TODO REMOVE THIS DEBUG
+        if (typeof value == 'undefined') {
+            console.log("Value is undefined");
+            console.log(typeof value);
+            value = -69;
+        }
         
         return value.toFixed(2);
     }

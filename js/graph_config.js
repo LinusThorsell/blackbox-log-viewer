@@ -952,13 +952,16 @@ GraphConfig.load = function(config) {
         if (!flightLog.isFieldDisabled().MAGNETOMETER) {
             EXAMPLE_GRAPHS.push({label: "Compass",fields: ["magADC[all]"]});
         }
+        if (!flightLog.isFieldDisabled().GPS) {
+            EXAMPLE_GRAPHS.push({label: "GPS",fields: ["GPS_coord[0]", "GPS_coord[1]", "GPS_numSat", "GPS_altitude", "GPS_speed", "GPS_ground_course"]});
+        }
         if (!flightLog.isFieldDisabled().DEBUG) {
             EXAMPLE_GRAPHS.push({label: "Debug",fields: ["debug[all]"]});
         }
 
         for (i = 0; i < EXAMPLE_GRAPHS.length; i++) {
             var
-                srcGraph = EXAMPLE_GRAPHS[i],
+            srcGraph = EXAMPLE_GRAPHS[i],
                 destGraph = {
                     label: srcGraph.label, 
                     fields: [],

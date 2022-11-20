@@ -169,6 +169,8 @@ function FlightLogGrapher(flightLog, graphConfig, canvas, stickCanvas, craftCanv
 
             axisPIDFields: [[], [], []],  //First dimension is [P, I, D], second dimension is axis
 
+            gpsFields: [],
+
             gyroFields:[],
 
             accFields:[],
@@ -243,6 +245,24 @@ function FlightLogGrapher(flightLog, graphConfig, canvas, stickCanvas, craftCanv
                     break;
                     case "heading":
                         idents.heading = fieldIndex;
+                    break;
+                    case "GPS_coords[0]":
+                        idents.gpsFields[0] = fieldIndex;
+                    break;
+                    case "GPS_coords[1]":
+                        idents.gpsFields[1] = fieldIndex;
+                    break;
+                    case "GPS_numSat":
+                        idents.gpsFields[2] = fieldIndex;
+                    break;
+                    case "GPS_altitude":
+                        idents.gpsFields[3] = fieldIndex;
+                    break;
+                    case "GPS_speed":
+                        idents.gpsFields[4] = fieldIndex;
+                    break;
+                    case "GPS_ground_course":
+                        idents.gpsFields[5] = fieldIndex;
                     break;
                     default:
                         idents.miscFields.push(fieldIndex);

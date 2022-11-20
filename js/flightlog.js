@@ -219,6 +219,8 @@ function FlightLog(logData) {
             }
         }
 
+        //fieldNames.push("GPS_coord[0]");
+
         // Add names for our ADDITIONAL_COMPUTED_FIELDS
         if (!that.isFieldDisabled().GYRO) {
             fieldNames.push("heading[0]", "heading[1]", "heading[2]");
@@ -228,6 +230,10 @@ function FlightLog(logData) {
         }
         if (!that.isFieldDisabled().SETPOINT) {
             fieldNames.push("rcCommands[0]", "rcCommands[1]", "rcCommands[2]", "rcCommands[3]"); // Custom calculated scaled rccommand
+        }
+        if (!that.isFieldDisabled().GPS) {
+            console.log("Adding gps");
+            fieldNames.push("GPS_coord[0]", "GPS_coord[1]", "GPS_numSat", "GPS_altitude", "GPS_speed", "GPS_ground_course");
         }
         if (!(that.isFieldDisabled().GYRO || that.isFieldDisabled().PID)) {
             fieldNames.push("axisError[0]", "axisError[1]", "axisError[2]"); // Custom calculated error field
@@ -450,6 +456,12 @@ function FlightLog(logData) {
                                 // TODO pending to do something with GPS frames
                                 // The frameValid can be false, when no GPS home (the G frames contains GPS position as diff of GPS Home position).
                                 // But other data from the G frame can be valid (time, num sats)
+                                
+                                //H Field G name:time,GPS_numSat,GPS_coord[0],GPS_coord[1],GPS_altitude,GPS_speed,GPS_ground_course
+                                for (var i = 0; i < frame.length; i++) {
+                                    console.log(`G frame[${i}] ${frame[i]}`);
+                                    //lastGPS[i] = frame[i];
+                                }
                             break;
                         }
                     } else {
@@ -531,6 +543,8 @@ function FlightLog(logData) {
         let rcCommand = [fieldNameToIndex["rcCommand[0]"], fieldNameToIndex["rcCommand[1]"], fieldNameToIndex["rcCommand[2]"], fieldNameToIndex["rcCommand[3]"]];
         let setpoint = [fieldNameToIndex["setpoint[0]"], fieldNameToIndex["setpoint[1]"], fieldNameToIndex["setpoint[2]"], fieldNameToIndex["setpoint[3]"]];
 
+        let gpsField = [fieldNameToIndex["GPS_coord[0]"], fieldNameToIndex["GPS_coord[1]"], fieldNameToIndex["GPS_altitude"], fieldNameToIndex["GPS_speed"], fieldNameToIndex["GPS_ground_course"]];
+
         const flightModeFlagsIndex = fieldNameToIndex["flightModeFlags"]; // This points to the flightmode data
 
         let axisPID = [[fieldNameToIndex["axisP[0]"], fieldNameToIndex["axisI[0]"], fieldNameToIndex["axisD[0]"], fieldNameToIndex["axisF[0]"]],
@@ -569,6 +583,10 @@ function FlightLog(logData) {
 
         if (!setpoint[0]) {
             setpoint = false;
+        }
+
+        if (!gpsField[0]) {
+            gpsField = false;
         }
 
         if (!axisPID[0]) {

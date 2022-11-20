@@ -139,6 +139,12 @@ function GraphLegend(targetElem, config, onVisibilityChange, onNewSelectionChang
 
     this.updateValues = function (flightLog, frame) {
         try {
+
+            console.log("flightlog")
+            console.log(flightLog)
+            console.log("frame")
+            console.log(frame)
+
             // New function to show values on legend.
             var currentFlightMode = frame[ flightLog.getMainFieldIndexByName("flightModeFlags") ];
             var
